@@ -1,4 +1,4 @@
-import np
+import numpy as np
 import cv2
 from Segmentation.Seg_Model import SegModel
 
