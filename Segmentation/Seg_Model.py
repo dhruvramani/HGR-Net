@@ -6,7 +6,7 @@ import random
 
 from keras.layers import Dense, Dropout, Activation, \
                          Flatten, Convolution2D, MaxPooling2D, \
-                         BatchNormalization, Conv2D, Input,merge,AveragePooling2D,concatenate
+                         BatchNormalization, Conv2D, Input,merge,AveragePooling2D,Concatenate, Add
 from keras.models import Model
 from Segmentation.utils.BilinearUpSampling import *
 from keras import optimizers
@@ -41,7 +41,7 @@ class SegModel(object):
 
                 ident_map = Conv2D(nfilter,(1,1),strides=(s,s))(ident_map)
 
-                out = merge([ident_map,x],mode='sum')
+                out = Add()([ident_map,x])
 
                 return out
             return Res_unit
@@ -70,7 +70,7 @@ class SegModel(object):
             a4 = Conv2D(dconv_filters, 3, activation = 'relu', padding = 'same', dilation_rate = 12)(conv1)
             a5 = Conv2D(dconv_filters, 3, activation = 'relu', padding = 'same', dilation_rate = 18)(conv1)
 
-            concat = merge([a1,a2,a3,a4,a5], mode = 'concat', concat_axis = 3)  
+            concat = Concatenate(axis=3)([a1,a2,a3,a4,a5])  
             
             return concat
 
